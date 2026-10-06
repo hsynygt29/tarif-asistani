@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PantryChef - Akıllı Mutfak & Tarif Asistanı</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff8f1',
+                            100: '#feecdc',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-amber-50/40 text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Header & Logo -->
+    <header class="bg-white border-b border-amber-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-brand-500 text-white p-2.5 rounded-2xl shadow-md shadow-brand-500/20">
+                    <i data-lucide="utensils" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                        PantryChef <span class="text-xs bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full font-semibold">Pro</span>
+                    </h1>
+                    <p class="text-xs text-slate-500">Mutfaktaki Malzemelerinle Tarif Bul</p>
+                </div>
+            </div>
+            <a href="#github-vs-tester" class="text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 px-3 py-2 rounded-xl border border-brand-100 flex items-center gap-1.5 transition">
+                <i data-lucide="code-2" class="w-4 h-4"></i> GitHub Advantage
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+
+        <!-- Purpose Banner -->
+        <section class="bg-gradient-to-r from-brand-600 to-amber-600 text-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-brand-600/10 relative overflow-hidden">
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium mb-3">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Akıllı Tarif Algoritması
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">Dolabındaki Malzemeleri Seç, Evdeki İsrafı Önle!</h2>
+                <p class="text-amber-100 text-sm sm:text-base leading-relaxed">
+                    Veritabanımızdaki 50 özel tarif arasından elindeki malzemelere en uygun olanları anında eşleştiriyoruz.
+                </p>
+            </div>
+        </section>
+
+        <!-- Pantry / Ingredient Selector -->
+        <section class="bg-white rounded-3xl p-6 border border-amber-100 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="refrigerator" class="w-5 h-5 text-brand-500"></i>
+                        Mutfağında Hangi Malzemeler Var?
+                    </h3>
+                    <p class="text-xs text-slate-500">Aşağıdaki malzemelerden elinde olanları işaretle:</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="selectAll()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-1.5 rounded-lg transition">Tümünü Seç</button>
+                    <button onclick="clearAll()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-1.5 rounded-lg transition">Temizle</button>
+                </div>
+            </div>
+
+            <!-- Ingredient Categories & Chips -->
+            <div id="ingredients-container" class="space-y-4">
+                <!-- JavaScript ile doldurulacak -->
+            </div>
+        </section>
+
+        <!-- Recipe Results Header & Filters -->
+        <section class="space-y-4">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i data-lucide="chef-hat" class="w-6 h-6 text-brand-500"></i>
+                        Önerilen Tarifler
+                    </h3>
+                    <p id="result-count" class="text-xs text-slate-500">Seçilen malzemelere göre sıralanıyor...</p>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <select id="category-filter" onchange="renderRecipes()" class="w-full sm:w-auto text-xs bg-white border border-slate-200 rounded-xl px-3 py-2 font-medium text-slate-700 focus:outline-none focus:border-brand-500 shadow-sm">
+                        <option value="ALL">Tüm Kategoriler</option>
+                        <option value="Çorba">Çorbalar</option>
+                        <option value="Ana Yemek">Ana Yemekler</option>
+                        <option value="Makarna & Pilav">Makarna & Pilav</option>
+                        <option value="Salata & Meze">Salata & Meze</option>
+                        <option value="Tatlı">Tatlılar</option>
+                        <option value="Kahvaltılık">Kahvaltılık</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Recipe Grid -->
+            <div id="recipe-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JavaScript ile tarif kartları buraya gelecek -->
+            </div>
+        </section>
+
+        <!-- GitHub vs HTML Testers Section -->
+        <section id="github-vs-tester" class="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl">
+            <div class="flex items-center gap-3 text-brand-500">
+                <i data-lucide="help-circle" class="w-6 h-6"></i>
+                <h3 class="text-lg font-bold text-white">GitHub'ın HTML Test Sitelerine Göre Avantajları Nelerdir?</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-300 leading-relaxed pt-2">
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <span class="text-brand-500 font-bold block text-sm">1. Kalıcı Canlı Yayın (Hosting)</span>
+                    <p>Test siteleri kodları geçici olarak çalıştırır. GitHub Pages ile projenizi dünyanın her yerinden erişilebilir gerçek bir web bağlantısıyla yayınlayabilirsiniz.</p>
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <span class="text-brand-500 font-bold block text-sm">2. Versiyon Kontrolü (Git)</span>
+                    <p>Kodunuzda yaptığınız tüm değişiklikler adım adım kaydedilir. Yanlış bir şey yaptığınızda eski çalışan sürüme kolayca geri dönebilirsiniz.</p>
+                </div>
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <span class="text-brand-500 font-bold block text-sm">3. Portfolyo ve İş Birliği</span>
+                    <p>GitHub hesabınız yazılım projelerinizi sergilediğiniz canlı bir özgeçmiştir. Başka geliştiricilerle ortak çalışmanıza imkan tanır.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 py-6 text-center text-xs text-slate-400">
+        <p>© 2026 PantryChef - 50 Tarifli Akıllı Mutfak Asistanı Projesi</p>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        // 50 Tarif Veritabanı
+        const recipes = [
+            { id: 1, title: "Mercimek Çorbası", category: "Çorba", time: "30 dk", cal: 180, ingredients: ["Kırmızı Mercimek", "Soğan", "Havuç", "Patates", "Zeytinyağı", "Salça"] },
+            { id: 2, title: "Fırında Tavuk Patates", category: "Ana Yemek", time: "45 dk", cal: 420, ingredients: ["Tavuk", "Patates", "Sarımsak", "Zeytinyağı", "Salça", "Kekik"] },
+            { id: 3, title: "Domatesli Makarna", category: "Makarna & Pilav", time: "20 dk", cal: 350, ingredients: ["Makarna", "Domates", "Sarımsak", "Zeytinyağı", "Fesleğen"] },
+            { id: 4, title: "Menemen", category: "Kahvaltılık", time: "15 dk", cal: 240, ingredients: ["Yumurta", "Domates", "Biber", "Zeytinyağı", "Peynir"] },
+            { id: 5, title: "Çoban Salatası", category: "Salata & Meze", time: "10 dk", cal: 120, ingredients: ["Domates", "Salatalık", "Biber", "Soğan", "Zeytinyağı", "Limon"] },
+            { id: 6, title: "Karnıyarık", category: "Ana Yemek", time: "50 dk", cal: 380, ingredients: ["Patlıcan", "Kıyma", "Soğan", "Domates", "Biber", "Sarımsak", "Salça"] },
+            { id: 7, title: "Pirinç Pilavı", category: "Makarna & Pilav", time: "25 dk", cal: 280, ingredients: ["Pirinç", "Tereyağı", "Zeytinyağı", "Tuz"] },
+            { id: 8, title: "Krep", category: "Kahvaltılık", time: "15 dk", cal: 210, ingredients: ["Un", "Süt", "Yumurta", "Zeytinyağı"] },
+            { id: 9, title: "Sütlaç", category: "Tatlı", time: "40 dk", cal: 260, ingredients: ["Pirinç", "Süt", "Şeker", "Nişasta", "Vanilya"] },
+            { id: 10, title: "Mantar Sote", category: "Ana Yemek", time: "20 dk", cal: 190, ingredients: ["Mantar", "Soğan", "Biber", "Sarımsak", "Zeytinyağı"] },
+            { id: 11, title: "Tavuklu Sote", category: "Ana Yemek", time: "30 dk", cal: 340, ingredients: ["Tavuk", "Biber", "Soğan", "Domates", "Sarımsak", "Zeytinyağı"] },
+            { id: 12, title: "Ezogelin Çorbası", category: "Çorba", time: "35 dk", cal: 200, ingredients: ["Kırmızı Mercimek", "Pirinç", "Bulgur", "Soğan", "Salça", "Zeytinyağı"] },
+            { id: 13, title: "Bulgur Pilavı", category: "Makarna & Pilav", time: "25 dk", cal: 230, ingredients: ["Bulgur", "Soğan", "Domates", "Biber", "Salça", "Zeytinyağı"] },
+            { id: 14, title: "Kısır", category: "Salata & Meze", time: "20 dk", cal: 290, ingredients: ["Bulgur", "Salça", "Soğan", "Maydanoz", "Limon", "Zeytinyağı", "Nar Ekşisi"] },
+            { id: 15, title: "Pancake", category: "Kahvaltılık", time: "15 dk", cal: 280, ingredients: ["Un", "Süt", "Yumurta", "Şeker", "Kabartma Tozu"] },
+            { id: 16, title: "Un Helvası", category: "Tatlı", time: "25 dk", cal: 380, ingredients: ["Un", "Tereyağı", "Şeker", "Süt"] },
+            { id: 17, title: "Tarhana Çorbası", category: "Çorba", time: "20 dk", cal: 160, ingredients: ["Tarhana", "Salça", "Tereyağı", "Sarımsak"] },
+            { id: 18, title: "Fırın Sütlaç", category: "Tatlı", time: "45 dk", cal: 280, ingredients: ["Pirinç", "Süt", "Şeker", "Nişasta", "Yumurta"] },
+            { id: 19, title: "Köfte Patates", category: "Ana Yemek", time: "35 dk", cal: 450, ingredients: ["Kıyma", "Patates", "Soğan", "Yumurta", "Zeytinyağı"] },
+            { id: 20, title: "Taze Fasulye", category: "Ana Yemek", time: "40 dk", cal: 170, ingredients: ["Taze Fasulye", "Domates", "Soğan", "Zeytinyağı", "Salça"] },
+            { id: 21, title: "Mücver", category: "Ana Yemek", time: "30 dk", cal: 220, ingredients: ["Kabak", "Yumurta", "Un", "Maydanoz", "Dereotu", "Zeytinyağı"] },
+            { id: 22, title: "Şehriye Çorbası", category: "Çorba", time: "20 dk", cal: 140, ingredients: ["Şehriye", "Domates", "Salça", "Tereyağı", "Limon"] },
+            { id: 23, title: "Ispanak Yemeği", category: "Ana Yemek", time: "30 dk", cal: 180, ingredients: ["Ispanak", "Soğan", "Pirinç", "Salça", "Zeytinyağı"] },
+            { id: 24, title: "Peynirli Börek", category: "Kahvaltılık", time: "40 dk", cal: 320, ingredients: ["Yufka", "Peynir", "Yumurta", "Süt", "Zeytinyağı"] },
+            { id: 25, title: "Yoğurtlu Makarna", category: "Makarna & Pilav", time: "20 dk", cal: 310, ingredients: ["Makarna", "Yoğurt", "Sarımsak", "Tereyağı", "Pul Biber"] },
+            { id: 26, title: "Humus", category: "Salata & Meze", time: "15 dk", cal: 260, ingredients: ["Nohut", "Tahin", "Limon", "Sarımsak", "Zeytinyağı"] },
+            { id: 27, title: "Nohut Yemeği", category: "Ana Yemek", time: "45 dk", cal: 310, ingredients: ["Nohut", "Soğan", "Salça", "Zeytinyağı"] },
+            { id: 28, title:İşlemi GitHub Web arayüzü üzerinden tarayıcı kullanarak adım adım gerçekleştirmek için takip etmeniz gereken tüm adımlar aşağıdadır.
+
+<Sequence>
+  <Step title="GitHub Deponuzu (Repository) Açın" subtitle="Tarayıcınız üzerinden oturum açın">
+    1. **github.com** adresine gidin ve hesabınıza giriş yapın.
+    2. Projenizin bulunduğu depoyu (repository) seçip açın.
+  </Step>
+
+  <Step title="Yeni Dosya Oluşturma Ekranına Gidin">
+    1. Ana proje sayfasında, dosya listesinin hemen üst sağ tarafında yer alan **"Add file"** butonuna tıklayın.
+    2. Açılan küçük menüden **"Create new file"** seçeneğini seçin.
+  </Step>
+
+  <Step title="Dosya Adını Belirleyin">
+    1. Sayfanın üst tarafındaki **"Name your file..."** yazan kutucuğa dosyanızın adını ve uzantısını yazın (örneğin: `odev.py` veya `index.html`).
+  </Step>
+
+  <Step title="Kodunuzu Ekleyin">
+    1. Dosya adı kutusunun altındaki geniş kod alanına (Edit bölümü) 1. seçenek için hazırladığınız kodları yapıştırın veya doğrudan yazın.
+  </Step>
+
+  <Step title="Değişiklikleri Kaydedin (Commit Changes)" subtitle="İşlemi onaylama adımı">
+    1. Kodunuzu ekledikten sonra sayfanın sağ üst tarafındaki yeşil **"Commit changes..."** butonuna tıklayın.
+    2. Açılan pencerede isterseniz kısa bir açıklama mesajı bırakabilirsiniz (örneğin: *"1. seçenek kodu eklendi"*).
+    3. Alt tarafta **"Commit directly to the `main` branch"** seçeneğinin işaretli olduğundan emin olun.
+    4. En alttaki yeşil **"Commit changes"** butonuna basarak işlemi tamamlayın.
+  </Step>
+</Sequence>
+
+Dosyanız ana dizine kaydedilmiş ve depounuza eklenmiş olacaktır. Projenizde belirli bir klasör altına eklemek isterseniz, 3. adımda dosya adını yazarken `klasor_adi/dosya_adi.py` şeklinde yazarak otomatik klasör oluşturabilirsiniz.
